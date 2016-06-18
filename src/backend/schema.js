@@ -130,7 +130,12 @@ const like = mutationWithClientMutationId({
     const id =  Number(fromGlobalId(input.postId).id);
     
     if (input.weight > 0) {
-      posts.like(id);
+      return posts.like(id)
+        .then(() => {
+          return {
+            post: posts.getPostById(id),
+          }
+        });
     } else {
       posts.dislike(id);
     }

@@ -19,7 +19,12 @@ module.exports = {
   },
   
   like(postId) {
-    this.likes.push({ postId, weight: 1 });
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.likes.push({ postId, weight: 1 });
+        resolve();
+      }, 1000)
+    })
   },
   
   dislike(postId) {

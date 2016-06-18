@@ -4,21 +4,84 @@ const { render } = require('react-dom');
 // const { Router, browserHistory, applyRouterMiddleware } = require('react-router');
 // const useRelay = require('react-router-relay');
 
+class LikePostMutation extends Relay.Mutation {
+  getMutation() {
+    return Relay.QL`mutation { like }`;
+  }
+  
+  getVariables() {
+    return {
+      postId: this.props.postId,
+      weight: this.props.weight,
+    }
+  }
+  
+  getFatQuery() {
+    return Relay.QL`
+      fragment on LikePayload {
+        post {
+          likeCount
+        }
+      }
+    `
+  }
+  
+  getConfigs() {
+    return [
+      {
+        type: 'FIELDS_CHANGE',
+        fieldIDs: {
+          post: this.props.postId,
+        },
+      }
+    ];
+  }
+  
+  getCollisionKey() {
+    return `like${this.props.postId}`
+  }
+}
+
 class Post extends React.Component {
   render() {
     return (
       <div>
         <div>{this.props.post.title}</div>
+        <div>Likes: {this.props.post.likeCount}</div>
+        <button onClick={() => this.like()}>Like</button>
+        <button onClick={() => this.dislike()}>Dislike</button>
+        <hr />
       </div>
     );
   }
+  
+  like() {
+    this.props.relay.commitUpdate(
+      new LikePostMutation({
+        postId: this.props.post.id,
+        weight: 1
+      })
+    );
+  }
+  
+  dislike() {
+    this.props.relay.commitUpdate(
+      new LikePostMutation({
+        postId: this.props.post.id,
+        weight: -1
+      })
+    );
+  }
 }
+
 
 const PostContainer = Relay.createContainer(Post, {
   fragments: {
     post: () => Relay.QL`
       fragment on Post {
+        id
         title
+        likeCount
       }
     `
   }

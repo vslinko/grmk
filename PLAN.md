@@ -2,56 +2,55 @@
 
 * [ ] First Part (11:00 - 12:15)
   * [ ] GraphQL
-    * [ ] Queries
+    * [x] Queries
     * [ ] Type System
-      * [ ] Schema
-      * [ ] Scalar
-        * [ ] Int
-        * [ ] Float
-        * [ ] String
-        * [ ] Boolean
-        * [ ] ID
-      * [ ] Object
-      * [ ] Interface ~
-      * [ ] Union ~
-      * [ ] Enum ~
-      * [ ] List
-      * [ ] NonNull
-    * [ ] Introspection
-    * [ ] Arguments
-    * [ ] Mutations
-    * [ ] Aliases
-    * [ ] Fragments
-    * [ ] Type Conditions
-    * [ ] Variables
-      * [ ] Default Values
-    * [ ] Interfaces
-    * [ ] Directives
-    * [ ] Deprecations
+      * [x] Schema
+      * [x] Scalar
+        * [x] Int
+        * [x] Float
+        * [x] String
+        * [x] Boolean
+        * [x] ID
+      * [x] Object
+      * [x] Interface ~
+      * [x] Union ~
+      * [x] Enum ~
+      * [x] List
+      * [x] NonNull
+    * [x] Introspection
+    * [x] Arguments
+    * [x] Mutations
+    * [x] Aliases
+    * [x] Fragments
+    * [x] Type Conditions
+    * [x] Variables
+      * [x] Default Values
+    * [x] Interfaces
+    * [x] Directives
+    * [x] Deprecations
 * [ ] Second Part (12:30 - 13:45)
   * [ ] Relay
-    * [ ] Containers
-      * [ ] Relay.QL
-    * [ ] Babel Relay Plugin
-    * [ ] RootContainer / Renderer
-    * [ ] Route
-    * [ ] Ready State
-    * [ ] Mutations
-    * [ ] Network Layer
-    * [ ] GraphQL Relay Specification
-      * [ ] Object Identification
-      * [ ] Connection
-      * [ ] Mutations
+    * [x] Containers
+      * [x] Relay.QL
+    * [x] Babel Relay Plugin
+    * [x] RootContainer / Renderer
+    * [x] Route
+    * [x] Ready State
+    * [x] Network Layer
+    * [x] GraphQL Relay Specification
+      * [x] Object Identification
+      * [x] Connection
+      * [x] Mutations
+    * [x] Mutations
 * [ ] Third Part (15:00 - 16:15)
-  * [ ] List
-  * [ ] Pagination
-  * [ ] Load Old
-  * [ ] Load New
-  * [ ] Comments
-    * [ ] Optimistic Updates
+  * [x] List
+  * [x] Pagination
+  * [x] Load Old
   * [ ] Likes
+    * [ ] Optimistic Updates
+  * [ ] Comments
     * [ ] Error Handling
-  * [ ] Pagination
+    * [ ] DB Request Optimization
   * [ ] State Synchronization
 * [ ] Last Part (16:30 - 17:45)
- 
+  
