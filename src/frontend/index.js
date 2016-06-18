@@ -4,12 +4,37 @@ const { render } = require('react-dom');
 // const { Router, browserHistory, applyRouterMiddleware } = require('react-router');
 // const useRelay = require('react-router-relay');
 
-class App extends React.Component {
+class Post extends React.Component {
   render() {
     return (
       <div>
-        {this.props.viewer.users.map(user => (
-          <div>{user.email}</div>
+        <div>{this.props.post.title}</div>
+      </div>
+    );
+  }
+}
+
+const PostContainer = Relay.createContainer(Post, {
+  fragments: {
+    post: () => Relay.QL`
+      fragment on Post {
+        title
+      }
+    `
+  }
+});
+
+class App extends React.Component {
+  render() {
+    console.log(this.props.viewer.posts);
+    
+    return (
+      <div>
+        {this.props.viewer.posts.edges.map(edge => (
+          <PostContainer
+            key={edge.cursor}
+            post={edge.node}
+          />
         ))}
       </div>
     );
@@ -20,6 +45,14 @@ const AppContainer = Relay.createContainer(App, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {
+        posts(first: 2) {
+          edges {
+            cursor
+            node {
+              ${PostContainer.getFragment('post')}
+            }
+          }
+        }
         users {
           id
           email
