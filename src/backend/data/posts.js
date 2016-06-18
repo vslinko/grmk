@@ -13,6 +13,10 @@ module.exports = {
     { postId: 3, weight: 1 },
     { postId: 4, weight: -1 },
   ],
+
+  getPostById(id) {
+    return this.posts.find(post => post.id === id);
+  },
   
   like(postId) {
     this.likes.push({ postId, weight: 1 });

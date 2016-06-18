@@ -30,7 +30,10 @@ const Post = new GraphQLObjectType({
     likeCount: {
       type: GraphQLInt,
       resolve: (post) => {
-        return posts.getPostLikes(post.id).length;
+        return posts.getPostLikes(post.id)
+          .reduce((likeCount, like) => {
+            return likeCount + like.weight;
+          }, 0);
       }
     }
   }),
@@ -82,6 +85,18 @@ const Viewer = new GraphQLObjectType({
         return users.getUsers();
       },
     },
+
+    post: {
+      type: Post,
+      args: {
+        id: { type: GraphQLID },
+      },
+      resolve: (viewer, args) => {
+        // fromGlobalId('BASE64') => {type: 'Post', id: '1'}
+
+        return posts.getPostById(Number(fromGlobalId(args.id).id));
+      },
+    },
   }),
 });
 
@@ -96,14 +111,44 @@ const RootQuery = new GraphQLObjectType({
   }),
 });
 
+const like = mutationWithClientMutationId({
+  name: 'Like',
+  inputFields: {
+    postId: {
+      type: GraphQLID,
+    },
+    weight: {
+      type: GraphQLInt,
+    },
+  },
+  outputFields: {
+    post: {
+      type: Post
+    }
+  },
+  mutateAndGetPayload: (input) => {
+    const id =  Number(fromGlobalId(input.postId).id);
+    
+    if (input.weight > 0) {
+      posts.like(id);
+    } else {
+      posts.dislike(id);
+    }
+
+    return {
+      post: posts.getPostById(id),
+    }
+  }
+})
+
 const RootMutation = new GraphQLObjectType({
   name: 'RootMutation',
   fields: () => ({
-    
+    like
   })
 });
 
 module.exports = new GraphQLSchema({
   query: RootQuery,
-  // mutation: RootMutation,
+  mutation: RootMutation,
 });
