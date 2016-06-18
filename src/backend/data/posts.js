@@ -8,11 +8,19 @@ module.exports = {
   ],
   
   likes: [
-    { postId: 1 },
-    { postId: 2 },
-    { postId: 3 },
-    { postId: 4 },
+    { postId: 1, weight: 1 },
+    { postId: 2, weight: 1 },
+    { postId: 3, weight: 1 },
+    { postId: 4, weight: -1 },
   ],
+  
+  like(postId) {
+    this.likes.push({ postId, weight: 1 });
+  },
+  
+  dislike(postId) {
+    this.likes.push({ postId, weight: -1 });
+  },
   
   getPosts() {
     return this.posts;
