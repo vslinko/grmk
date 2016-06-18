@@ -26,8 +26,10 @@ const PostContainer = Relay.createContainer(Post, {
 
 class App extends React.Component {
   render() {
-    console.log(this.props.viewer.posts);
-    
+    console.log(this.props.relay);
+    const showNextButton =
+      this.props.viewer.posts.pageInfo.hasNextPage;
+
     return (
       <div>
         {this.props.viewer.posts.edges.map(edge => (
@@ -36,19 +38,35 @@ class App extends React.Component {
             post={edge.node}
           />
         ))}
+        {showNextButton &&
+          <button onClick={() => this.loadNextPosts()}>Next Posts</button>
+        }
       </div>
     );
+  }
+  
+  loadNextPosts() {
+    this.props.relay.setVariables({
+      first: this.props.relay.variables.first + 2,
+    })
   }
 }
 
 const AppContainer = Relay.createContainer(App, {
+  initialVariables: {
+    first: 2,
+  },
+  
   fragments: {
     viewer: () => Relay.QL`
       fragment on Viewer {
-        posts(first: 2) {
-          edges {
+        posts(first: $first) { # PostConnect
+          pageInfo {
+            hasNextPage
+          }
+          edges { # PostEdge
             cursor
-            node {
+            node { # Post
               ${PostContainer.getFragment('post')}
             }
           }
