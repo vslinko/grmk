@@ -4,7 +4,8 @@
   "scripts": {
     "backend:dev": "supervisor -e js -w src/backend node src/backend/index.js",
     "frontend:dev": "supervisor -e js,json -w server.js,webpack.config.js,src/schema.json node server.js",
-    "start": "concurrently 'npm run backend:dev' 'npm run frontend:dev'"
+    "schema:watch": "supervisor -w src/backend/schema.js -n exit node ./bin/dump_schema",
+    "start": "concurrently 'npm run backend:dev' 'npm run frontend:dev' 'npm run schema:watch'"
   },
   "dependencies": {
     "dataloader": "^1.2.0",
