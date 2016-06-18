@@ -7,11 +7,22 @@ module.exports = {
     { id: 5, title: 'Test5' },
   ],
   
+  likes: [
+    { postId: 1 },
+    { postId: 2 },
+    { postId: 3 },
+    { postId: 4 },
+  ],
+  
   getPosts() {
     return this.posts;
   },
   
   getUserPosts(userId) {
     return this.posts;
+  },
+  
+  getPostLikes(postId) {
+    return this.likes.filter(like => like.postId === postId);
   }
 }

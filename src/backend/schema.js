@@ -1,4 +1,4 @@
-const { GraphQLID, GraphQLList, GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
+const { GraphQLInt, GraphQLID, GraphQLList, GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
 const { connectionDefinitions, connectionArgs, connectionFromArray, nodeDefinitions, fromGlobalId, globalIdField, mutationWithClientMutationId } = require('graphql-relay');
 
 const users = require('./data/users');
@@ -27,6 +27,12 @@ const Post = new GraphQLObjectType({
     title: {
       type: GraphQLString,
     },
+    likeCount: {
+      type: GraphQLInt,
+      resolve: (post) => {
+        return posts.getPostLikes(post.id).length;
+      }
+    }
   }),
   interfaces: [nodeInterface],
 });
