@@ -1,5 +1,5 @@
 const { GraphQLID, GraphQLList, GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
-const { nodeDefinitions, fromGlobalId, globalIdField, mutationWithClientMutationId } = require('graphql-relay');
+const { connectionDefinitions, connectionArgs, connectionFromArray, nodeDefinitions, fromGlobalId, globalIdField, mutationWithClientMutationId } = require('graphql-relay');
 
 const users = require('./data/users');
 const posts = require('./data/posts');
@@ -51,9 +51,25 @@ const User = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
+const {connectionType: PostConnection} =
+  connectionDefinitions({
+    nodeType: Post
+  });
+
 const Viewer = new GraphQLObjectType({
   name: 'Viewer',
   fields: () => ({
+    posts: {
+      type: PostConnection,
+      args: connectionArgs,
+      resolve: (viewer, args) => {
+        return connectionFromArray(
+          posts.getPosts(),
+          args
+        );
+      },
+    },
+
     users: {
       type: new GraphQLList(User),
       resolve: () => {
