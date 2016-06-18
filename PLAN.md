@@ -48,8 +48,8 @@
   * [x] Load Old
   * [x] Likes
     * [x] Optimistic Updates
-  * [ ] New Post
-    * [ ] Mutations for Connections
+  * [x] New Post
+    * [x] Mutations for Connections
     * [ ] Error Handling
     * [ ] DB Request Optimization
       * [ ] dataloader
@@ -58,3 +58,6 @@
     * [ ] File Loading
 * [ ] Last Part (16:30 - 17:45)
   
+https://gitter.im/dev-ua/reactjs
+https://telegram.me/react_js
+Franz
