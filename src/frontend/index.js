@@ -63,6 +63,32 @@ LikePostMutation.fragments = {
   `
 }
 
+class PostForm extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      title: ''
+    }
+  }
+  
+  render() {
+    return (
+      <form onSubmit={(e) => this.save(e)}>
+        <input
+          value={this.state.title}
+          onChange={e => this.setState({ title: e.target.value })}
+        />
+        <button type="submit">Publish</button>
+      </form>
+    );
+  }
+  
+  save(e) {
+    e.preventDefault();
+    console.log(this.state);
+  }
+}
+
 class Post extends React.Component {
   render() {
     return (
@@ -126,6 +152,7 @@ class App extends React.Component {
         {showNextButton &&
           <button onClick={() => this.loadNextPosts()}>Next Posts</button>
         }
+        <PostForm />
       </div>
     );
   }
