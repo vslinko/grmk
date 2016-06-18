@@ -4,6 +4,42 @@ const { render } = require('react-dom');
 // const { Router, browserHistory, applyRouterMiddleware } = require('react-router');
 // const useRelay = require('react-router-relay');
 
+class CreatePostMutation extends Relay.Mutation {
+  getMutation() {
+    return Relay.QL`mutation { createPost }`;
+  }
+  
+  getVariables() {
+    return {
+      title: this.props.title,
+    }
+  }
+  
+  getFatQuery() {
+    return Relay.QL`
+      fragment on CreatePostPayload {
+        postEdge
+        viewer
+      }
+    `
+  }
+  
+  getConfigs() {
+    return [
+      {
+        type: 'RANGE_ADD',
+        parentName: 'viewer',
+        parentID: 'viewer',
+        connectionName: 'posts',
+        edgeName: 'postEdge',
+        rangeBehaviors: {
+          '': 'append',
+        },
+      }
+    ];
+  }
+}
+
 class LikePostMutation extends Relay.Mutation {
   getMutation() {
     return Relay.QL`mutation { like }`;
@@ -85,7 +121,10 @@ class PostForm extends React.Component {
   
   save(e) {
     e.preventDefault();
-    console.log(this.state);
+    
+    this.props.relay.commitUpdate(
+      new CreatePostMutation(this.state)
+    );
   }
 }
 
@@ -152,7 +191,7 @@ class App extends React.Component {
         {showNextButton &&
           <button onClick={() => this.loadNextPosts()}>Next Posts</button>
         }
-        <PostForm />
+        <PostForm relay={this.props.relay} />
       </div>
     );
   }

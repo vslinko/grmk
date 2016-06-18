@@ -96,6 +96,11 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
+            "name": "Viewer",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
             "name": "Post",
             "ofType": null
           },
@@ -111,6 +116,22 @@
         "name": "Viewer",
         "description": null,
         "fields": [
+          {
+            "name": "id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "posts",
             "description": null,
@@ -205,7 +226,13 @@
           }
         ],
         "inputFields": null,
-        "interfaces": [],
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
+          }
+        ],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -624,12 +651,24 @@
         "description": null,
         "fields": [
           {
-            "name": "post",
+            "name": "viewer",
             "description": null,
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "Post",
+              "name": "Viewer",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "postEdge",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "PostEdge",
               "ofType": null
             },
             "isDeprecated": false,

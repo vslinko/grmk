@@ -1,4 +1,4 @@
-const { GraphQLInt, GraphQLID, GraphQLList, GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
+const { GraphQLNonNull, GraphQLInt, GraphQLID, GraphQLList, GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
 const { connectionDefinitions, connectionArgs, connectionFromArray, nodeDefinitions, fromGlobalId, globalIdField, mutationWithClientMutationId } = require('graphql-relay');
 
 const users = require('./data/users');
@@ -60,14 +60,16 @@ const User = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-const {connectionType: PostConnection} =
+const {connectionType: PostConnection, edgeType: PostEdge} =
   connectionDefinitions({
     nodeType: Post
   });
 
 const Viewer = new GraphQLObjectType({
   name: 'Viewer',
+  interfaces: [nodeInterface], // FAST HACK
   fields: () => ({
+    id: { type: new GraphQLNonNull(GraphQLID), resolve: () => 'viewer' }, // FAST HACK
     posts: {
       type: PostConnection,
       args: connectionArgs,
@@ -119,13 +121,20 @@ const createPost = mutationWithClientMutationId({
     },
   },
   outputFields: {
-    post: {
-      type: Post
+    viewer: {
+      type: Viewer,
+    },
+    postEdge: {
+      type: PostEdge
     }
   },
   mutateAndGetPayload: (input) => {
     return {
-      post: posts.createPost(input.title),
+      viewer: {},
+      postEdge: {
+        cursor: String(Math.random()),
+        node: posts.createPost(input.title),
+      },
     }
   }
 })

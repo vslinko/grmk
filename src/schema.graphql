@@ -9,7 +9,8 @@ input CreatePostInput {
 }
 
 type CreatePostPayload {
-  post: Post
+  viewer: Viewer
+  postEdge: PostEdge
   clientMutationId: String!
 }
 
@@ -68,7 +69,8 @@ type User implements Node {
   posts: [Post]
 }
 
-type Viewer {
+type Viewer implements Node {
+  id: ID!
   posts(after: String, first: Int, before: String, last: Int): PostConnection
   users: [User]
   post(id: ID): Post
