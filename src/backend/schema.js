@@ -1,13 +1,16 @@
 const { GraphQLID, GraphQLList, GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
 const { nodeDefinitions, fromGlobalId, globalIdField, mutationWithClientMutationId } = require('graphql-relay');
 
+const users = require('./data/users');
+const posts = require('./data/posts');
+
 const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
     const {type, id} = fromGlobalId(globalId);
     
     switch (type) {
       case 'User':
-        return db.users.find(user => String(user.id) === id).map(u => new User(u));
+        return users.getById(id);
       default:
         return null;
     }
@@ -16,15 +19,6 @@ const { nodeInterface, nodeField } = nodeDefinitions(
     return User;
   }
 );
-
-const db = {
-  users: [
-    { id: 1, username: 'vslinko', email: 'vslinko@yahoo.com' }
-  ],
-  posts: [
-    { id: 1, title: 'q' }
-  ]
-};
 
 const Post = new GraphQLObjectType({
   name: 'Post',
@@ -50,7 +44,7 @@ const User = new GraphQLObjectType({
     posts: {
       type: new GraphQLList(Post),
       resolve: (user) => {
-        return db.posts;
+        return posts.getUserPosts(user.id);
       }
     }
   }),
@@ -63,7 +57,7 @@ const Viewer = new GraphQLObjectType({
     users: {
       type: new GraphQLList(User),
       resolve: () => {
-        return db.users;
+        return users.getUsers();
       },
     },
   }),
