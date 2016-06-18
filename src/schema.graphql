@@ -3,6 +3,16 @@ schema {
   mutation: RootMutation
 }
 
+input CreatePostInput {
+  title: String
+  clientMutationId: String!
+}
+
+type CreatePostPayload {
+  post: Post
+  clientMutationId: String!
+}
+
 input LikeInput {
   postId: ID
   weight: Int
@@ -42,6 +52,7 @@ type PostEdge {
 }
 
 type RootMutation {
+  createPost(input: CreatePostInput!): CreatePostPayload
   like(input: LikeInput!): LikePayload
 }
 

@@ -111,6 +111,25 @@ const RootQuery = new GraphQLObjectType({
   }),
 });
 
+const createPost = mutationWithClientMutationId({
+  name: 'CreatePost',
+  inputFields: {
+    title: {
+      type: GraphQLString,
+    },
+  },
+  outputFields: {
+    post: {
+      type: Post
+    }
+  },
+  mutateAndGetPayload: (input) => {
+    return {
+      post: posts.createPost(input.title),
+    }
+  }
+})
+
 const like = mutationWithClientMutationId({
   name: 'Like',
   inputFields: {
@@ -130,12 +149,7 @@ const like = mutationWithClientMutationId({
     const id =  Number(fromGlobalId(input.postId).id);
     
     if (input.weight > 0) {
-      return posts.like(id)
-        .then(() => {
-          return {
-            post: posts.getPostById(id),
-          }
-        });
+      posts.like(id)
     } else {
       posts.dislike(id);
     }
@@ -149,7 +163,8 @@ const like = mutationWithClientMutationId({
 const RootMutation = new GraphQLObjectType({
   name: 'RootMutation',
   fields: () => ({
-    like
+    createPost,
+    like,
   })
 });
 

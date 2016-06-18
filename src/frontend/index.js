@@ -11,7 +11,7 @@ class LikePostMutation extends Relay.Mutation {
   
   getVariables() {
     return {
-      postId: this.props.postId,
+      postId: this.props.post.id,
       weight: this.props.weight,
     }
   }
@@ -31,15 +31,36 @@ class LikePostMutation extends Relay.Mutation {
       {
         type: 'FIELDS_CHANGE',
         fieldIDs: {
-          post: this.props.postId,
+          post: this.props.post.id,
         },
       }
     ];
   }
   
   getCollisionKey() {
-    return `like${this.props.postId}`
+    return `like${this.props.post.id}`
   }
+  
+  getOptimisticConfigs() {
+    return this.getConfigs();
+  }
+  
+  getOptimisticResponse() {
+    return {
+      post: {
+        id: this.props.post.id,
+        likeCount: this.props.post.likeCount + this.props.weight
+      }
+    }
+  }
+}
+LikePostMutation.fragments = {
+  post: () => Relay.QL`
+    fragment on Post {
+      id
+      likeCount
+    }
+  `
 }
 
 class Post extends React.Component {
@@ -58,8 +79,8 @@ class Post extends React.Component {
   like() {
     this.props.relay.commitUpdate(
       new LikePostMutation({
-        postId: this.props.post.id,
-        weight: 1
+        post: this.props.post,
+        weight: 1,
       })
     );
   }
@@ -67,7 +88,7 @@ class Post extends React.Component {
   dislike() {
     this.props.relay.commitUpdate(
       new LikePostMutation({
-        postId: this.props.post.id,
+        post: this.props.post,
         weight: -1
       })
     );
@@ -82,6 +103,7 @@ const PostContainer = Relay.createContainer(Post, {
         id
         title
         likeCount
+        ${LikePostMutation.getFragment('post')}
       }
     `
   }

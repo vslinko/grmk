@@ -1,4 +1,5 @@
 module.exports = {
+  lastPostId: 5,
   posts: [
     { id: 1, title: 'Test1' },
     { id: 2, title: 'Test2' },
@@ -17,14 +18,15 @@ module.exports = {
   getPostById(id) {
     return this.posts.find(post => post.id === id);
   },
-  
+
+  createPost(title) {
+    const post = { id: ++this.lastPostId, title };
+    this.posts.push(post);
+    return post;
+  },
+
   like(postId) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.likes.push({ postId, weight: 1 });
-        resolve();
-      }, 1000)
-    })
+    this.likes.push({ postId, weight: 1 });
   },
   
   dislike(postId) {

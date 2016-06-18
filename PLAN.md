@@ -46,11 +46,15 @@
   * [x] List
   * [x] Pagination
   * [x] Load Old
-  * [ ] Likes
-    * [ ] Optimistic Updates
-  * [ ] Comments
+  * [x] Likes
+    * [x] Optimistic Updates
+  * [ ] New Post
+    * [ ] Mutations for Connections
     * [ ] Error Handling
     * [ ] DB Request Optimization
-  * [ ] State Synchronization
+      * [ ] dataloader
+  * [ ] Apollo Stack
+  * [ ] Real Project
+    * [ ] File Loading
 * [ ] Last Part (16:30 - 17:45)
   
