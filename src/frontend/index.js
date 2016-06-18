@@ -4,61 +4,14 @@ const { render } = require('react-dom');
 // const { Router, browserHistory, applyRouterMiddleware } = require('react-router');
 // const useRelay = require('react-router-relay');
 
-class UpdateUserMutation extends Relay.Mutation {
-  getMutation() {
-    return Relay.QL`mutation { updateUser }`;
-  }
-  
-  getVariables() {
-    return {
-      id: this.props.id,
-      email: this.props.email,
-    };
-  }
-  
-  getFatQuery() {
-    return Relay.QL`
-      fragment on UpdateUserPayload {
-        user {
-          email
-        }
-      }
-    `;
-  }
-  
-  getConfigs() {
-    return [
-      {
-        type: 'FIELDS_CHANGE',
-        fieldIDs: {
-          user: this.props.id,
-        },
-      }
-    ];
-  }
-  
-  getCollisionKey() {
-    return `user${this.props.id}`;
-  }
-}
-
 class App extends React.Component {
   render() {
     return (
       <div>
         {this.props.viewer.users.map(user => (
-          <div>{user.email} <button onClick={() => this.random(user.id)}>Random Email</button></div>
+          <div>{user.email}</div>
         ))}
       </div>
-    );
-  }
-
-  random(id) {
-    Relay.Store.commitUpdate(
-      new UpdateUserMutation({
-        id,
-        email: String(Math.random()),
-      })
     );
   }
 }
